@@ -1,7 +1,8 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-
+import hamming_code
+import repetition_code
 def NoiseChannel(inp_array, error):  #(要產生錯誤的陣列, 錯誤率)
     inp_array = list(inp_array)
     for i in range(len(inp_array)):
