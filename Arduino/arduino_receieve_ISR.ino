@@ -21,7 +21,7 @@ void loop (){
         //Serial.println(count);
 
        if(count == 20)
-          Serial.println('3');
+          Serial.print('3');
 //        Serial.print(' ');
 //        Serial.println(count);
       
@@ -29,7 +29,7 @@ void loop (){
         copyofPotential = Potential;
         for(int i=1 ; i<=count ; i++){
           //CodeBook.concat(copyofPotential);
-          Serial.println(copyofPotential);
+          Serial.print(copyofPotential);
         }
        }
       }
