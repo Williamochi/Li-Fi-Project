@@ -59,7 +59,7 @@ def hamming_encoding(inp_list):
         d += 4
     m2 = ''.join(m2)
     return m2
-#print(m2)
+
 #  !!要補個偵測最後少於四個的標誌能讓decoder知道!!(完成)
 ###############decoder#################
 hamming_743code = ['0000000','0001101','0010111','0011010','0100011','0101110','0110100','0111001',
@@ -103,10 +103,6 @@ def errorcheck(inp):
         temp = code_change(temp, 6)
     return temp
 
-# m3 = '0000011'
-# TEMP00 = errorcheck(m3)
-# print(TEMP00)
-
 def hamming_decoding(inp_list):
     decode_m1 = inp_list
     decode_m2 = ['']
@@ -132,127 +128,3 @@ def hamming_decoding(inp_list):
             decode_m2[0] = decode_m2[0][:-num_zero]
             block_decode_m1 = block_decode_m2
     return decode_m2[0]
-
-def repeatition(inp_list):
-    temp3=''
-    for i in range(len(inp_list)):
-        temp1 = inp_list[i]
-        temp2 = temp1*3
-        temp3 += temp2
-    return temp3
-
-def inv_repeatition(inp_list):
-    i = 0
-    zero_count = 0
-    one_count = 0
-    temp2 = ''
-    while True:
-        temp1 = inp_list[i:i+3]
-        for j in range(3):
-            if temp1[j]=='0':
-                zero_count+=1
-            else:
-                one_count+=1
-        if zero_count > one_count:
-            temp2+='0'
-        else:
-            temp2+='1'
-        i+=3
-        if i == len(inp_list):
-            break
-        zero_count = 0
-        one_count = 0
-    return temp2
-inp_list = '10101100'
-inp_list2 = repeatition(inp_list)
-# print(inv_repeatition(inp_list2))
-
-#print(decode_m2)
-#m = '00110100'
-#print(hamming_encoding(m))
-def NoiseChannel(inp_array, error):  #(要產生錯誤的陣列, 錯誤率)
-    inp_array = list(inp_array)
-    for i in range(len(inp_array)):
-        dice = random.uniform(0, 100)
-        ErrorRate = error*100 # [百分比%]
-        if dice <= ErrorRate:
-            if inp_array[i] == '1':
-                inp_array[i] = '0'
-            else:
-                inp_array[i] = '1'
-    output_array = ''.join(inp_array)
-    return output_array
-
-codeword = ['0000', '0001', '0010','0011', '0100', '0101', '0110', '0111', 
-            '1000', '1001', '1010', '1011','1100', '1101', '1110', '1111']
-
-def feedback_test100():
-    return_count = 0
-    each_scuess_count=[]
-    error = np.arange(0,0.55,0.05)
-    for j in range(len(error)):
-        for i in range(100):
-            inp_array = codeword[0]
-            #hamming_input = hamming_encoding(inp_array)
-            repeat_input = repeatition(inp_array)
-            while True:
-                # channel_output = NoiseChannel(hamming_input, error[j])
-                # hamming_output = hamming_decoding(channel_output)
-                channel2_output = NoiseChannel(repeat_input, error[j])
-                repeat_output = inv_repeatition(channel2_output)
-                #if inp_array != hamming_output:
-                if inp_array != repeat_output:
-                    return_count+=1
-                else:
-                    break
-        scuess_count = return_count/100
-        each_scuess_count.append(scuess_count)
-        return_count = 0
-    return error,each_scuess_count
-def feedback_test2():
-    success_count = 0
-    success_rate = 0
-    each_scuess_rate=[]
-    fail_count = 0
-    fail_rate = 0
-    each_fail_rate=[]
-    runtimes_count = 0
-    runtimes = np.arange(1,15,1)
-    error = 0.2
-    for h in range(len(runtimes)):
-        for i in range(100):
-            inp_array = codeword[0]
-            hamming_input = hamming_encoding(inp_array)
-            for j in range(runtimes[h]):
-                runtimes_count += 1
-                channel_output = NoiseChannel(hamming_input, error)
-                hamming_output = hamming_decoding(channel_output)
-                if inp_array == hamming_output:
-                    success_count += 1
-                    break
-            if inp_array != hamming_output:
-                fail_count += 1
-        # fail_rate = (fail_count/runtimes_count)/len(hamming_743code)
-        # each_scuess_rate.append(fail_rate)
-        success_rate = (fail_count)/100
-        each_scuess_rate.append(success_rate)
-        fail_count = 0
-        success_count = 0
-        runtimes_count = 0
-    return runtimes,each_scuess_rate
-# plt.plot(feedback_test100()[0],feedback_test100()[1])
-# plt.plot(feedback_test2()[0],feedback_test2()[1])
-# plt.grid(True)
-# plt.xlim(0,0.5,0.05)
-# plt.ylim(0,16,1)
-# plt.xlabel("error probability") # x label
-# plt.ylabel("ratio of resending times with each codeword") # y label
-# plt.xlim(0,15)
-# plt.ylim(0,1.5)
-# plt.xlabel("resending times") # x label
-# plt.ylabel("ratio of successful times with each codeword") # y label
-# plt.show()
-
-
-
-
