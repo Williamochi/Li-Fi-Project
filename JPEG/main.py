@@ -74,28 +74,3 @@ for sr in range(100):
 print("成功次數:{}".format(deal))
 print("失敗次數:{}".format(error_count))
 '''
-'''
-########snake diff
-
-pre_last = 0
-for i in range(w):
-    diff = []
-
-    for j in range(w):
-        if j != 0:
-            diff.append(img3[count[j]][i][0]-img3[count[j-1]][i][0])
- 
-        else:
-            diff.append(img3[count[j]][i][0]-pre_last)
-
-    pre_last = img3[count[31]][i][0]
-    for j in range(w):
-        img3[count[j]][i][0] = diff[j]
-        #print(img3[j][i])
-    
-    if i%2 == 0:
-        count = sorted(count)
-    else:
-        count = sorted(count,reverse = True)
-'''
-
